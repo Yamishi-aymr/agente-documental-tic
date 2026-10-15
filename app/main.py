@@ -8,9 +8,21 @@ from app.core.config import settings
 from app.models.documento import AskRequest, AskResponse
 from app.services.sync_service import SyncService
 from app.services.agent_service import AgentService
+from fastapi.middleware.cors import CORSMiddleware
 
 ROOT = Path(__file__).resolve().parents[1]
 app = FastAPI(title="Archivo TIC IA", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://yamishi-aymr.github.io",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
+
 app.mount("/assets", StaticFiles(directory=ROOT / "assets"), name="assets")
 
 def local_only(request: Request):
