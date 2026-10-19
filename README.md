@@ -36,7 +36,7 @@ Desarrollar un agente documental capaz de consultar archivos PDF, DOCX y TXT, ut
 - **GitHub Actions:** automatización de la sincronización.
 - **Vercel y GitHub Pages:** despliegue del proyecto.
 
-## 💡 Uso del agente
+## Uso del agente
 
 1. Acceder a la aplicación web.
 2. Revisar los documentos disponibles.
