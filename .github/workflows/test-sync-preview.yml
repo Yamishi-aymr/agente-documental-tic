@@ -1,0 +1,73 @@
+
+name: Probar sincronizacion documental
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  preview-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Autenticarse con Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/583958599803/locations/global/workloadIdentityPools/github-actions-sync/providers/github-actions'
+          service_account: 'agente-documental-sync@agente-documental-tic-511715.iam.gserviceaccount.com'
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Simular sincronizacion
+        env:
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          VECTOR_STORE_ID: ${{ secrets.VECTOR_STORE_ID }}
+        run: |
+          python - <<'PY'
+          import json
+          from app.services.sync_service import SyncService
+
+          resultado = SyncService().preview()
+
+          print(
+              json.dumps(
+                  resultado,
+                  indent=2,
+                  ensure_ascii=False
+              )
+          )
+
+          if (
+              resultado["added"]
+              or resultado["updated"]
+              or resultado["removed"]
+          ):
+              print(
+                  "Se detectaron cambios. "
+                  "Esta prueba no los aplicara."
+              )
+          else:
+              print(
+                  "Sin cambios. "
+                  "El indice documental esta actualizado."
+              )
+
+          print("Prueba completada.")
+          PY
