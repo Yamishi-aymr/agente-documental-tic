@@ -1,0 +1,32 @@
+
+name: Probar conexion con Google Cloud
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test-auth:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+
+      - name: Autenticarse en Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/583958599803/locations/global/workloadIdentityPools/github-actions-sync/providers/github-actions'
+          service_account: 'agente-documental-sync@agente-documental-tic-511715.iam.gserviceaccount.com'
+
+      - name: Configurar Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verificar autenticacion
+        run: |
+          echo "Comprobando identidad autenticada..."
+          gcloud auth list --filter="status:ACTIVE" --format="value(account)"
+          echo "Prueba de autenticacion finalizada."
