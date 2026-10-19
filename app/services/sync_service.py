@@ -26,10 +26,12 @@ MANIFEST = (
 
 _LOCK = threading.Lock()
 
+
 SUPPORTED = {
     "application/pdf",
     "text/plain",
     "application/vnd.google-apps.document",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 }
 
 
