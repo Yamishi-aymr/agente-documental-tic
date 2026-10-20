@@ -1,0 +1,47 @@
+{
+  "vector_store_id": "vs_6ad0fed69a2c81919462e6a621bad976",
+  "documents": {
+    "1iXmKMzUI512aI8Ri32gzYi-sA2lpnsHE": {
+      "name": "Fundamentos-de-bases-de-datos.pdf",
+      "modified_time": "2026-10-15T15:52:33.964Z",
+      "mime_type": "application/pdf",
+      "openai_file_id": "file-Tzz2kkVykPhpxrtzV8UWKH",
+      "url": "https://drive.google.com/file/d/1iXmKMzUI512aI8Ri32gzYi-sA2lpnsHE/view?usp=drivesdk"
+    },
+    "1RoA5VbYWe6bE61vumuawWMBpPY4ydIYM": {
+      "name": "Guia de AWS RDS.pdf",
+      "modified_time": "2026-10-15T15:51:39.692Z",
+      "mime_type": "application/pdf",
+      "openai_file_id": "file-JjXzbPTv3yzQDk5R5o3Bsc",
+      "url": "https://drive.google.com/file/d/1RoA5VbYWe6bE61vumuawWMBpPY4ydIYM/view?usp=drivesdk"
+    },
+    "1kOPPbKX_tKh9webmPQRNY6Pqhk2Eq65c": {
+      "name": "Introduccion a Bases de datos.pdf",
+      "modified_time": "2026-10-15T15:56:45.942Z",
+      "mime_type": "application/pdf",
+      "openai_file_id": "file-GEEzD8PwZFtQicgH8LsBQn",
+      "url": "https://drive.google.com/file/d/1kOPPbKX_tKh9webmPQRNY6Pqhk2Eq65c/view?usp=drivesdk"
+    },
+    "1zWwVDKmatRvQ7KPvn-NBD8Yud5g2_bIj": {
+      "name": "Glosario Tema 2.docx",
+      "modified_time": "2026-10-07T05:19:10.009Z",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "openai_file_id": "file-BKuMhgDuABia4qQY83ucfX",
+      "url": "https://docs.google.com/document/d/1zWwVDKmatRvQ7KPvn-NBD8Yud5g2_bIj/edit?usp=drivesdk&ouid=110437235177550762313&rtpof=true&sd=true"
+    },
+    "12o0OqLo5nNIRSe00KrcIqIHvfbZUCL_W": {
+      "name": "Investigacion_ODS_9.docx",
+      "modified_time": "2026-09-08T04:07:12.876Z",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "openai_file_id": "file-LxwG8W7kimsfCwN91kLpyR",
+      "url": "https://docs.google.com/document/d/12o0OqLo5nNIRSe00KrcIqIHvfbZUCL_W/edit?usp=drivesdk&ouid=110437235177550762313&rtpof=true&sd=true"
+    },
+    "104lmBJaRtiZYq6o_b42_qGFO9oiiBJet": {
+      "name": "Investigación Baja California Sur.docx",
+      "modified_time": "2026-09-26T04:58:47.290Z",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "openai_file_id": "file-QAKkNZ37GN8UhNzhjpqYEx",
+      "url": "https://docs.google.com/document/d/104lmBJaRtiZYq6o_b42_qGFO9oiiBJet/edit?usp=drivesdk&ouid=110437235177550762313&rtpof=true&sd=true"
+    }
+  }
+}

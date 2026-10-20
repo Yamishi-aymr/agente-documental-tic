@@ -4,162 +4,806 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Archivo TIC IA | Agente documental</title>
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <meta name="description" content="Agente documental inteligente con Google Drive y búsqueda semántica RAG.">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="./assets/css/styles.css" rel="stylesheet">
+
+    <!-- =====================================
+         ESTILOS DE SUGERENCIAS DOCUMENTALES
+         ===================================== -->
+    <style>
+        .discovery-section {
+            margin-bottom: 28px;
+        }
+
+        .discovery-panel {
+            background: #ffffff;
+            border: 1px solid #e7e3db;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(17, 48, 71, .06);
+            padding: 28px;
+        }
+
+        .discovery-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .discovery-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9eae4;
+            color: #b02a29;
+            border-radius: 14px;
+            font-size: 1.4rem;
+        }
+
+        .discovery-title {
+            color: #113047;
+            font-size: 1.35rem;
+            font-weight: 750;
+            margin: 0 0 6px;
+        }
+
+        .discovery-description {
+            color: #647584;
+            font-size: .92rem;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .discovery-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f4f6f8;
+            color: #58748a;
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: .75rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .topic-card {
+            appearance: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            min-height: 175px;
+            padding: 20px;
+            text-align: left;
+            background: #fffaf1;
+            border: 1px solid #ece3d5;
+            border-radius: 17px;
+            cursor: pointer;
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .topic-card:hover {
+            background: #ffffff;
+            border-color: #b02a29;
+            transform: translateY(-3px);
+            box-shadow: 0 9px 22px rgba(109, 18, 11, .09);
+        }
+
+        .topic-card:focus-visible {
+            outline: 3px solid #739ab9;
+            outline-offset: 3px;
+        }
+
+        .topic-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            background: #f2ded8;
+            color: #8a211b;
+            font-size: 1.25rem;
+        }
+
+        .topic-name {
+            color: #113047;
+            font-size: .94rem;
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .topic-description {
+            color: #687683;
+            font-size: .81rem;
+            line-height: 1.6;
+        }
+
+        .topic-action {
+            margin-top: auto;
+            padding-top: 12px;
+            color: #b02a29;
+            font-size: .77rem;
+            font-weight: 700;
+        }
+
+        .discovery-help {
+            margin-top: 22px;
+            padding: 15px 18px;
+            background: #f3f7fa;
+            border-left: 3px solid #739ab9;
+            border-radius: 12px;
+            color: #425e70;
+            font-size: .85rem;
+            line-height: 1.7;
+        }
+
+        .discovery-help strong {
+            color: #113047;
+        }
+
+        @media (max-width: 991px) {
+            .topics-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 575px) {
+            .discovery-panel {
+                padding: 20px 16px;
+            }
+
+            .discovery-heading {
+                gap: 12px;
+            }
+
+            .discovery-title {
+                font-size: 1.16rem;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-card {
+                min-height: 145px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .topic-card {
+                transition: none;
+            }
+
+            .topic-card:hover {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- =====================================
+         ENCABEZADO
+         ===================================== -->
     <header class="hero py-4">
-        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="container d-flex flex-wrap
+                    justify-content-between
+                    align-items-center gap-3">
+
             <div>
-                <div class="eyebrow">PRÁCTICA 2.3 · INTELIGENCIA ARTIFICIAL APLICADA A LAS TIC</div>
-                <h1 class="h2 mb-1">Archivo TIC <span>IA</span></h1>
-                <p class="m-0 text-white-50">Agente documental con Google Drive y búsqueda semántica RAG</p>
-            </div><span class="badge rounded-pill border border-light text-light" id="health">Comprobando
-                servidor…</span>
+                <div class="eyebrow">
+                    PRÁCTICA 2.3 · INTELIGENCIA ARTIFICIAL
+                    APLICADA A LAS TIC
+                </div>
+
+                <h1 class="h2 mb-1">
+                    Archivo TIC <span>IA</span>
+                </h1>
+
+                <p class="m-0 text-white-50">
+                    Agente documental con Google Drive
+                    y búsqueda semántica RAG
+                </p>
+            </div>
+
+            <span class="badge rounded-pill border border-light text-light" id="health">
+                Comprobando servidor…
+            </span>
+
         </div>
     </header>
+
+    <!-- =====================================
+         CONTENIDO PRINCIPAL
+         ===================================== -->
     <main class="container py-4">
+
+        <!-- =================================
+             NUEVA SECCIÓN:
+             DESCUBRE QUÉ PUEDES PREGUNTAR
+             ================================= -->
+        <section class="discovery-section" aria-labelledby="discovery-title">
+
+            <div class="discovery-panel">
+
+                <div class="discovery-heading">
+
+                    <div class="discovery-icon" aria-hidden="true">
+                        ✨
+                    </div>
+
+                    <div>
+                        <h2 class="discovery-title" id="discovery-title">
+                            Descubre qué puedes preguntar
+                        </h2>
+
+                        <p class="discovery-description">
+                            Explora los temas disponibles en
+                            nuestra base documental y descubre
+                            qué información puedes consultar
+                            con ayuda de la Inteligencia Artificial.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="discovery-status" id="topics-status" role="status" aria-live="polite">
+                    Identificando temas disponibles...
+                </div>
+
+                <!-- Las tarjetas se generan automáticamente -->
+                <div class="topics-grid" id="suggested-topics" aria-live="polite">
+                </div>
+
+                <div class="discovery-help">
+                    <strong>💡 ¿Cómo funciona?</strong>
+                    Selecciona un tema para colocar una pregunta
+                    sugerida en el formulario. También puedes
+                    escribir tus propias preguntas acerca de
+                    cualquiera de los documentos indexados.
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================
+             BASE DOCUMENTAL Y CONSULTAS
+             ================================= -->
         <div class="row g-4">
+
+            <!-- BASE DOCUMENTAL -->
             <div class="col-lg-4">
+
                 <section class="card shell h-100">
+
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h2 class="h5 mb-0">Base documental</h2>
-                            <span class="badge text-bg-info" id="doc-count">0</span>
+
+                        <div class="d-flex align-items-center
+                                    justify-content-between">
+
+                            <h2 class="h5 mb-0">
+                                Base documental
+                            </h2>
+
+                            <span class="badge text-bg-info" id="doc-count">
+                                0
+                            </span>
+
                         </div>
-                        <p class="small text-secondary mt-2">Archivos indexados desde una carpeta autorizada de Google
-                            Drive.</p>
-                        <div id="documents" class="doc-list" aria-live="polite">Sin documentos indexados.</div>
+
+                        <p class="small text-secondary mt-2">
+                            Archivos indexados desde una carpeta
+                            autorizada de Google Drive.
+                        </p>
+
+                        <div id="documents" class="doc-list" aria-live="polite">
+                            Sin documentos indexados.
+                        </div>
 
                         <p class="small text-success mt-3 mb-0">
-                            Base documental preparada para consultas con IA.
+                            Base documental preparada para
+                            consultas con IA.
                         </p>
 
                     </div>
+
                 </section>
+
             </div>
+
+            <!-- PANEL DE CONSULTA -->
             <div class="col-lg-8">
+
                 <section class="card shell">
+
                     <div class="card-body">
-                        <h2 class="h5">Consultar al agente</h2><label class="form-label mt-2" for="question">Pregunta
-                            sobre los documentos</label><textarea class="form-control" id="question" rows="3"
-                            maxlength="3000" placeholder="¿Qué documentos explican Amazon RDS y sus conexiones?"
-                            required></textarea>
-                        <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center mt-3">
-                            <div class="form-check form-switch"><input id="use-search" class="form-check-input"
-                                    type="checkbox" checked><label class="form-check-label" for="use-search">Activar
-                                    File Search (RAG)</label></div><button class="btn btn-primary" type="button"
-                                id="ask">Consultar agente</button>
+
+                        <h2 class="h5">
+                            Consultar al agente
+                        </h2>
+
+                        <label class="form-label mt-2" for="question">
+                            Pregunta sobre los documentos
+                        </label>
+
+                        <textarea class="form-control" id="question" rows="3" maxlength="3000"
+                            placeholder="¿Qué documentos explican Amazon RDS y sus conexiones?" required></textarea>
+
+                        <div class="d-flex flex-wrap
+                                    justify-content-between
+                                    gap-2 align-items-center mt-3">
+
+                            <div class="form-check form-switch">
+
+                                <input id="use-search" class="form-check-input" type="checkbox" checked>
+
+                                <label class="form-check-label" for="use-search">
+                                    Activar File Search (RAG)
+                                </label>
+
+                            </div>
+
+                            <button class="btn btn-primary" type="button" id="ask">
+                                Consultar agente
+                            </button>
+
                         </div>
-                        <div id="message" role="status" class="small mt-3" aria-live="polite"></div>
+
+                        <div id="message" role="status" class="small mt-3" aria-live="polite">
+                        </div>
+
                     </div>
+
                 </section>
+
+                <!-- RESPUESTA -->
                 <section class="card shell mt-4">
+
                     <div class="card-body">
-                        <h2 class="h5">Respuesta documental</h2>
-                        <div id="answer" class="answer mt-3" aria-live="polite">Escribe una pregunta para comenzar.
+
+                        <h2 class="h5">
+                            Respuesta documental
+                        </h2>
+
+                        <div id="answer" class="answer mt-3" aria-live="polite">
+                            Escribe una pregunta para comenzar.
                         </div>
-                        <h3 class="h6 mt-4">Fuentes verificables</h3>
-                        <ul id="sources" class="list-group list-group-flush"></ul>
+
+                        <h3 class="h6 mt-4">
+                            Fuentes verificables
+                        </h3>
+
+                        <ul id="sources" class="list-group list-group-flush">
+                        </ul>
+
                     </div>
+
                 </section>
+
             </div>
+
         </div>
+
     </main>
-   
-<!-- =====================================
-     FOOTER INSTITUCIONAL
-===================================== -->
-<footer class="site-footer">
-    <div class="container">
 
-        <div class="footer-main">
+    <!-- =====================================
+         FOOTER INSTITUCIONAL
+         ===================================== -->
+    <footer class="site-footer">
 
-            <!-- Información institucional -->
-            <div class="footer-institution">
-                <div class="footer-logo">
-                    <span>ITP</span>
+        <div class="container">
+
+            <div class="footer-main">
+
+                <!-- Información institucional -->
+                <div class="footer-institution">
+
+                    <div class="footer-logo">
+                        <span>ITP</span>
+                    </div>
+
+                    <div>
+                        <p class="footer-eyebrow">
+                            TECNOLÓGICO NACIONAL DE MÉXICO
+                        </p>
+
+                        <h2 class="footer-title">
+                            Instituto Tecnológico de Pachuca
+                        </h2>
+
+                        <p class="footer-description">
+                            Proyecto académico desarrollado para
+                            la asignatura de Inteligencia Artificial
+                            Aplicada a las TIC.
+                        </p>
+                    </div>
+
                 </div>
 
-                <div>
-                    <p class="footer-eyebrow">
-                        TECNOLÓGICO NACIONAL DE MÉXICO
-                    </p>
+                <!-- Información del proyecto -->
+                <div class="footer-section">
 
-                    <h2 class="footer-title">
-                        Instituto Tecnológico de Pachuca
-                    </h2>
+                    <h3>Sobre el proyecto</h3>
 
-                    <p class="footer-description">
-                        Proyecto académico desarrollado para
-                        la asignatura de Inteligencia Artificial
-                        Aplicada a las TIC.
-                    </p>
+                    <p>Archivo TIC IA</p>
+                    <p>Agente Documental Inteligente</p>
+                    <p>Práctica 2.3</p>
+
+                    <span class="footer-tag">
+                        Google Drive · RAG · OpenAI
+                    </span>
+
                 </div>
+
+                <!-- Información del estudiante -->
+                <div class="footer-section">
+
+                    <h3>Datos del estudiante</h3>
+
+                    <div class="footer-info">
+
+                        <span class="footer-label">
+                            Nombre completo
+                        </span>
+
+                        <strong>
+                            Alicia Yamileth Mariano Reséndiz
+                        </strong>
+
+                    </div>
+
+                    <div class="footer-info">
+
+                        <span class="footer-label">
+                            Número de control
+                        </span>
+
+                        <strong>
+                            22200787
+                        </strong>
+
+                    </div>
+
+                    <div class="footer-info">
+
+                        <span class="footer-label">
+                            Carrera
+                        </span>
+
+                        <strong>
+                            Ingeniería en Tecnologías de la
+                            Información y Comunicaciones
+                        </strong>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- Información del proyecto -->
-            <div class="footer-section">
-                <h3>Sobre el proyecto</h3>
+            <!-- Línea inferior -->
+            <div class="footer-bottom">
 
-                <p>Archivo TIC IA</p>
-                <p>Agente Documental Inteligente</p>
-                <p>Práctica 2.3</p>
+                <p>
+                    &copy; 2026 · Tecnológico Nacional de México
+                    · Campus Pachuca
+                </p>
 
-                <span class="footer-tag">
-                    Google Drive · RAG · OpenAI
-                </span>
-            </div>
-
-            <!-- Información del estudiante -->
-            <div class="footer-section">
-                <h3>Datos del estudiante</h3>
-
-                <div class="footer-info">
-                    <span class="footer-label">
-                        Nombre completo
-                    </span>
-                    <strong>
-                        Alicia Yamileth Mariano Reséndiz
-                    </strong>
-                </div>
-
-                <div class="footer-info">
-                    <span class="footer-label">
-                        Número de control
-                    </span>
-                    <strong>
-                        22200787
-                    </strong>
-                </div>
-
-                <div class="footer-info">
-                    <span class="footer-label">
-                        Carrera
-                    </span>
-                    <strong>
-                       Ingeniería en Tecnologías de la Información y COmunicaciones
-                    </strong>
-                </div>
             </div>
 
         </div>
 
-        <!-- Línea inferior -->
-        <div class="footer-bottom">
-            <p>
-                &copy; 2026 · Tecnológico Nacional de México
-                · Campus Pachuca
-            </p>
+    </footer>
 
-            
-        </div>
+    <!-- =====================================
+         SCRIPT ORIGINAL DEL AGENTE
+         ¡NO ELIMINAR!
+         ===================================== -->
+    <script type="module" src="./assets/js/app.js"></script>
 
-    </div>
-</footer>
-<script type="module" src="./assets/js/app.js"></script>
+    <!-- =====================================
+         NUEVA FUNCIONALIDAD:
+         SUGERENCIAS DOCUMENTALES
+         ===================================== -->
+    <script type="module">
+        import { ApiClient } from './assets/js/api.js';
+
+        const api = new ApiClient();
+
+        const topicsContainer =
+            document.getElementById('suggested-topics');
+
+        const topicsStatus =
+            document.getElementById('topics-status');
+
+        const questionField =
+            document.getElementById('question');
+
+        // Temas sugeridos en función del nombre
+        // de los documentos disponibles.
+        const TOPIC_RULES = [
+            {
+                title: 'Inteligencia Artificial',
+                icon: '🧠',
+                keywords: [
+                    'inteligencia artificial',
+                    'fundamentos de ia',
+                    'machine learning',
+                    'deep learning'
+                ],
+                description:
+                    'Fundamentos de IA, aprendizaje automático, ' +
+                    'redes neuronales, RAG y modelos generativos.',
+                question:
+                    '¿Qué es la Inteligencia Artificial y ' +
+                    'cuáles son sus fundamentos principales?'
+            },
+            {
+                title: 'Git y GitHub',
+                icon: '🌿',
+                keywords: [
+                    'git',
+                    'github',
+                    'control de versiones'
+                ],
+                description:
+                    'Control de versiones, repositorios, ' +
+                    'commits, ramas y trabajo colaborativo.',
+                question:
+                    '¿Qué es Git y cuáles son sus principales ' +
+                    'características y diferencias con GitHub?'
+            },
+            {
+                title: 'Bases de datos',
+                icon: '🗄️',
+                keywords: [
+                    'bases de datos',
+                    'base de datos',
+                    'glosario tema 2'
+                ],
+                description:
+                    'Conceptos básicos, modelos de datos, ' +
+                    'estructura, organización y administración.',
+                question:
+                    '¿Cuáles son los fundamentos de las bases ' +
+                    'de datos y por qué son importantes?'
+            },
+            {
+                title: 'Amazon AWS y RDS',
+                icon: '☁️',
+                keywords: [
+                    'aws',
+                    'amazon',
+                    'rds',
+                    'aurora'
+                ],
+                description:
+                    'Servicios de bases de datos en la nube ' +
+                    'y características de Amazon RDS.',
+                question:
+                    '¿Qué es Amazon RDS y cuáles son sus ' +
+                    'ventajas para administrar bases de datos?'
+            },
+            {
+                title: 'Objetivos de Desarrollo Sostenible',
+                icon: '🌎',
+                keywords: [
+                    'ods',
+                    'desarrollo sostenible',
+                    'sostenibilidad'
+                ],
+                description:
+                    'Objetivos de Desarrollo Sostenible, ' +
+                    'innovación, industria e infraestructura.',
+                question:
+                    '¿En qué consiste el ODS 9 y cuál es su ' +
+                    'importancia para la innovación tecnológica?'
+            },
+            {
+                title: 'Baja California Sur',
+                icon: '🏝️',
+                keywords: [
+                    'baja california sur'
+                ],
+                description:
+                    'Información cultural, histórica y ' +
+                    'geográfica sobre Baja California Sur.',
+                question:
+                    '¿Cuáles son las principales características ' +
+                    'y tradiciones de Baja California Sur?'
+            }
+        ];
+
+        // Normalizar nombres para comparar palabras
+        // independientemente de tildes y mayúsculas.
+        function normalizeName(value) {
+            return String(value || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[_-]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Evita que "git" coincida accidentalmente
+        // con una parte de otra palabra.
+        function hasKeyword(filename, keyword) {
+            const normalizedName = normalizeName(filename);
+            const normalizedKeyword = normalizeName(keyword);
+
+            return (
+                (' ' + normalizedName + ' ')
+                    .includes(' ' + normalizedKeyword + ' ')
+            );
+        }
+
+        // Crear una tarjeta de tema.
+        function createTopicCard(topic) {
+            const button = document.createElement('button');
+
+            button.type = 'button';
+            button.className = 'topic-card';
+
+            const icon = document.createElement('span');
+            icon.className = 'topic-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.textContent = topic.icon;
+
+            const title = document.createElement('span');
+            title.className = 'topic-name';
+            title.textContent = topic.title;
+
+            const description = document.createElement('span');
+            description.className = 'topic-description';
+            description.textContent = topic.description;
+
+            const action = document.createElement('span');
+            action.className = 'topic-action';
+            action.textContent = 'Preguntar sobre este tema →';
+
+            button.append(
+                icon,
+                title,
+                description,
+                action
+            );
+
+            button.addEventListener('click', () => {
+                if (!questionField) return;
+
+                questionField.value = topic.question;
+                questionField.focus();
+
+                questionField.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            });
+
+            return button;
+        }
+
+        async function loadSuggestedTopics() {
+            if (!topicsContainer || !topicsStatus) {
+                return;
+            }
+
+            topicsStatus.textContent =
+                'Identificando temas disponibles...';
+
+            try {
+                const result = await api.documents();
+
+                const files = Array.isArray(result.documents)
+                    ? result.documents
+                    : [];
+
+                topicsContainer.replaceChildren();
+
+                if (files.length === 0) {
+                    topicsStatus.textContent =
+                        'No hay documentos disponibles.';
+
+                    return;
+                }
+
+                const matchedFiles = new Set();
+
+                const matchingTopics = TOPIC_RULES.filter(topic => {
+                    const matches = files.filter(file =>
+                        topic.keywords.some(keyword =>
+                            hasKeyword(file.name, keyword)
+                        )
+                    );
+
+                    for (const file of matches) {
+                        matchedFiles.add(file);
+                    }
+
+                    return matches.length > 0;
+                });
+
+                for (const topic of matchingTopics) {
+                    topicsContainer.appendChild(
+                        createTopicCard(topic)
+                    );
+                }
+
+                // Mostrar también documentos cuyo nombre
+                // no corresponde a un tema conocido.
+                const otherFiles = files.filter(
+                    file => !matchedFiles.has(file)
+                );
+
+                for (const file of otherFiles.slice(0, 8)) {
+                    const name = file.name || 'Documento';
+
+                    topicsContainer.appendChild(
+                        createTopicCard({
+                            title: name,
+                            icon: '📄',
+                            description:
+                                'Consulta los conceptos e información ' +
+                                'contenidos en este documento.',
+                            question:
+                                '¿Cuáles son los temas principales ' +
+                                'del documento "' + name + '"?'
+                        })
+                    );
+                }
+
+                topicsStatus.textContent =
+                    files.length +
+                    ' documentos disponibles · ' +
+                    topicsContainer.children.length +
+                    ' temas sugeridos';
+
+                if (!topicsContainer.children.length) {
+                    topicsStatus.textContent =
+                        'Explora los documentos disponibles.';
+                }
+
+            } catch (error) {
+                topicsContainer.replaceChildren();
+
+                topicsStatus.textContent =
+                    'No fue posible cargar las sugerencias.';
+
+                console.warn(
+                    'Error al obtener temas documentales:',
+                    error
+                );
+            }
+        }
+
+        loadSuggestedTopics();
+    </script>
+
 </body>
 
 </html>

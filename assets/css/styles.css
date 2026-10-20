@@ -699,3 +699,261 @@ footer a:hover {
         gap: 9px;
     }
 }
+
+/* ==========================================
+   DESCUBRE QUÉ PUEDES PREGUNTAR
+   Archivo TIC IA - Diseño Premium
+========================================== */
+
+/* Contenedor principal */
+
+.discovery-section {
+    margin-bottom: 28px;
+}
+
+.discovery-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 28px;
+}
+
+/* Encabezado */
+
+.discovery-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.discovery-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f9eae4;
+    color: var(--redwood);
+    border-radius: 14px;
+    font-size: 1.4rem;
+}
+
+.discovery-title {
+    color: var(--navy);
+    font-size: 1.35rem;
+    font-weight: 750;
+    margin: 0 0 6px;
+}
+
+.discovery-description {
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Indicador de documentos */
+
+.discovery-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: #f4f6f8;
+    color: #58748a;
+
+    border-radius: 30px;
+    padding: 7px 13px;
+    margin-bottom: 20px;
+
+    font-size: .75rem;
+    font-weight: 650;
+}
+
+/* Cuadrícula de temas */
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+}
+
+/* Tarjetas de temas */
+
+.topic-card {
+    appearance: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 185px;
+    padding: 20px;
+
+    text-align: left;
+
+    background: var(--surface-soft);
+    border: 1px solid #ece3d5;
+    border-radius: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.topic-card:hover {
+    background: #ffffff;
+    border-color: var(--redwood);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 9px 22px rgba(109, 18, 11, .09);
+}
+
+.topic-card:active {
+    transform: translateY(-1px);
+}
+
+.topic-card:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+}
+
+/* Íconos */
+
+.topic-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    background: #f2ded8;
+    color: var(--wine);
+
+    border-radius: 12px;
+    font-size: 1.3rem;
+}
+
+/* Nombre y descripción */
+
+.topic-name {
+    color: var(--navy);
+    font-size: .94rem;
+    font-weight: 750;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+}
+
+.topic-description {
+    color: var(--muted);
+    font-size: .81rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+/* Enlace visual */
+
+.topic-action {
+    color: var(--redwood);
+    font-size: .78rem;
+    font-weight: 700;
+
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+.topic-card:hover .topic-action {
+    color: var(--wine);
+}
+
+/* Instrucciones */
+
+.discovery-help {
+    margin-top: 22px;
+    padding: 16px 18px;
+
+    background: #f3f7fa;
+    color: #425e70;
+
+    border-left: 3px solid var(--blue);
+    border-radius: 12px;
+
+    font-size: .85rem;
+    line-height: 1.7;
+}
+
+.discovery-help strong {
+    color: var(--navy);
+}
+
+/* ==========================================
+   RESPONSIVE - SUGERENCIAS
+========================================== */
+
+@media (max-width: 991px) {
+
+    .topics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575px) {
+
+    .discovery-panel {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .discovery-heading {
+        gap: 12px;
+    }
+
+    .discovery-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+
+    .discovery-title {
+        font-size: 1.16rem;
+    }
+
+    .topics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topic-card {
+        min-height: 145px;
+        padding: 17px;
+    }
+
+    .discovery-help {
+        padding: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .topic-card,
+    .topic-card:hover {
+        transition: none;
+        transform: none;
+    }
+}
